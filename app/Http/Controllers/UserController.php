@@ -19,8 +19,8 @@ class UserController extends Controller {
      */
     public function authenticate(Request $request) {
         $this->validate($request, [
-            'user_name' => 'required',
-            'code'      => 'required'
+            'Username' => 'required',
+            'Code'     => 'required'
         ]);
         $user = User::where('email', $request->input('email'))->first();
         if (Hash::check($request->input('password'), $user->password)) {

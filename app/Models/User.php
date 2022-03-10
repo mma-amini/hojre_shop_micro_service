@@ -28,4 +28,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
     ];
+    
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
 }
