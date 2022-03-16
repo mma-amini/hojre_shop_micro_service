@@ -13,6 +13,18 @@
 |
 */
 
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+
+$router->post('/user/checkUser', 'UserController@checkUser');
+
+$router->post('/user/login', 'UserController@login');
+
+$router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->get('/home', function () use ($router) {
+        return $router->app->version();
+    });
+    $router->get('/user/profile', 'UserController@profile');
 });
