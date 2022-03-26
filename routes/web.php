@@ -22,6 +22,8 @@ $router->post('/user/checkUser', 'UserController@checkUser');
 
 $router->post('/user/login', 'UserController@login');
 
+$router->post('/user/refreshToken', 'UserController@refreshToken');
+
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/home', function () use ($router) {
         return $router->app->version();
