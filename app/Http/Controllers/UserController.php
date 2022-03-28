@@ -23,7 +23,7 @@ class UserController extends Controller {
         
         $user = User::where('user_name', $username)->first();
         
-        if ($user != null) {
+        if (!empty($user)) {
             return $this->sendCode($user);
         } else {
             return $this->insertUser($username);
@@ -63,7 +63,7 @@ class UserController extends Controller {
         
         $user = User::where('user_name', $username)->where("sms_code", $code)->first();
         
-        if ($user != null) {
+        if (!empty($user)) {
             return $this->setToken($user);
         } else {
             return ApiController::api(null, "کاربر یافت نشد", 1, 410);
@@ -75,10 +75,10 @@ class UserController extends Controller {
         
         $user = User::where('remember_token', $refreshToken)->first();
         
-        if ($user != null) {
+        if (!empty($user)) {
             return $this->setToken($user);
         } else {
-            return ApiController::api(null, "کاربر یافت نشد", 1, 410);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
     

@@ -7,10 +7,11 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 
 class User extends ModelUuid implements AuthenticatableContract, AuthorizableContract {
-    use Authenticatable, Authorizable, HasFactory;
+    use Authenticatable, Authorizable, HasFactory, SoftDeletes;
     
     /**
      * The attributes that are mass assignable.
@@ -18,7 +19,12 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'user_name', 'sms_code', 'access_token', 'remember_token'
+        'first_name',
+        'last_name',
+        'user_name',
+        'sms_code',
+        'access_token',
+        'remember_token'
     ];
     
     /**
