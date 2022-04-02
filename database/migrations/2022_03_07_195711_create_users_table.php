@@ -15,13 +15,10 @@ class CreateUsersTable extends Migration {
             $table->foreignUuid('id')->primary();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('user_name')->unique();
-            $table->char('sms_code', 6)->nullable();
-            $table->string('access_token')->nullable()->unique();
-            $table->rememberToken()->nullable()->unique();
-            $table->timestamp("expire_on")->nullable();
-            $table->bigInteger("expire_in")->nullable();
+            $table->string('username')->unique();
+            $table->string('password')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
     

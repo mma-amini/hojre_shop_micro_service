@@ -14,19 +14,34 @@
 */
 
 
+use App\Http\Controllers\ApiController;
+use Illuminate\Support\Facades\Route;
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->post('/user/checkUser', 'UserController@checkUser');
-
-$router->post('/user/login', 'UserController@login');
-
-$router->post('/user/refreshToken', 'UserController@refreshToken');
-
-$router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->get('/home', function () use ($router) {
-        return $router->app->version();
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+        $router->group(['prefix' => 'oauth'], function () use ($router) {
+            $router->post("/token", function () {
+                return ApiController::api(null, "امکان اجرای درخواست وجود ندارد", 1, 410, 410);
+            });
+        });
+        
+        $router->post('/auth/login', [
+            'uses' => '\App\Http\Controllers\AuthController@login',
+            'as'   => 'login',
+            //            'middleware' => 'throttle',
+        ]);
+        
+        $router->group(['middleware' => 'auth'], function () use ($router) {
+            $router->get('/home', function () use ($router) {
+                return $router->app->version();
+            });
+            
+            $router->get('/user/profile', ['as'   => 'profile',
+                                           'uses' => 'UserController@profile']);
+        });
     });
-    $router->get('/user/profile', 'UserController@profile');
 });

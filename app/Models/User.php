@@ -6,12 +6,12 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends ModelUuid implements AuthenticatableContract, AuthorizableContract {
-    use Authenticatable, Authorizable, HasFactory, SoftDeletes;
+    use HasApiTokens, Authenticatable, Authorizable, HasFactory, SoftDeletes;
     
     /**
      * The attributes that are mass assignable.
@@ -21,10 +21,8 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
     protected $fillable = [
         'first_name',
         'last_name',
-        'user_name',
-        'sms_code',
-        'access_token',
-        'remember_token'
+        'username',
+        'password',
     ];
     
     /**
@@ -37,5 +35,9 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
     
     public function roles() {
         return $this->belongsToMany(Role::class, 'role_user');
+    }
+    
+    public function findForPassport($username){
+        return $user = $this->where('username', $username)->first();
     }
 }

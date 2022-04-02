@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
+use Dusterio\LumenPassport\LumenPassport;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider {
@@ -27,15 +29,14 @@ class AuthServiceProvider extends ServiceProvider {
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
         
+        LumenPassport::tokensExpireIn(Carbon::now()->addMinutes(30), 2);
+    
         $this->app['auth']->viaRequest('api', function ($request) {
-            if ($request->header('Authorization')) {
-                $key  = explode(' ', $request->header('Authorization'));
-                $user = User::where('access_token', $key[1])->first();
-                if (!empty($user)) {
-                    $request->request->add(['userid' => $user->id]);
-                }
-                return $user;
+            if ($request->input('api_token')) {
+                return User::where('api_token', $request->input('api_token'))->first();
             }
         });
     }
+    
+    
 }
