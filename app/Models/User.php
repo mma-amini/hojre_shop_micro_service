@@ -6,6 +6,8 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
@@ -33,11 +35,15 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
     protected $hidden = [
     ];
     
-    public function roles() {
+    public function roles(): BelongsToMany {
         return $this->belongsToMany(Role::class, 'role_user');
     }
     
-    public function findForPassport($username){
+    public function findForPassport($username) {
         return $user = $this->where('username', $username)->first();
+    }
+    
+    public function shop(): HasOne {
+        return $this->hasOne(Shop::class);
     }
 }

@@ -24,7 +24,7 @@ class ModelUuid extends Model {
      *
      * @return bool
      */
-    public function getIncrementing() {
+    public function getIncrementing(): bool {
         return false;
     }
     
@@ -33,7 +33,7 @@ class ModelUuid extends Model {
      *
      * @return string
      */
-    public function getKeyName() {
+    public function getKeyName(): string {
         return 'id';
     }
     
@@ -42,7 +42,7 @@ class ModelUuid extends Model {
      *
      * @return string
      */
-    public function getKeyType() {
+    public function getKeyType(): string {
         return 'string';
     }
 }
