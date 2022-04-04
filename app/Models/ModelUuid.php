@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class ModelUuid extends Model {
-    // public $incrementing = false;
-    // protected $keyType = 'string';
+    public    $incrementing = false;
+    protected $keyType      = 'string';
 
     /**
      * Override default id

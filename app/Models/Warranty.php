@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Warranty extends ModelUuid {
     use SoftDeletes;
-
+    
     public function designs(): HasMany {
         return $this->hasMany(Design::class);
     }

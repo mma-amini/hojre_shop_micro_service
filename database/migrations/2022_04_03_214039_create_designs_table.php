@@ -22,13 +22,13 @@ return new class extends Migration {
             $table->boolean('is_active')->default(false);
             $table->timestamps();
             $table->softDeletes();
-
+            
             $table->foreign('shop_id')->references('id')->on('shops')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('warranty_id')->references('id')->on('warranties')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

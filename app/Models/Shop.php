@@ -14,10 +14,10 @@ class Shop extends ModelUuid {
     }
 
     public function categories(): BelongsToMany {
-        return $this->belongsToMany(Category::class, 'category_shop');
+        return $this->belongsToMany(Category::class);
     }
 
     public function products(): BelongsToMany {
-        return $this->belongsToMany(Product::class, 'product_shop');
+        return $this->belongsToMany(Product::class);
     }
 }

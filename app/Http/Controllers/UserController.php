@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -61,8 +62,12 @@ class UserController extends Controller {
     }
 
     public function getUser() {
-        $user = User::first()->roles();
-
-        dd($user);
+        $user = User::first();
+        
+        $data = $user->roles;
+        
+//        echo($data->shop_name);
+        
+        dd($data);
     }
 }

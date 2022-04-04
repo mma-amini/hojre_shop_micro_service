@@ -27,6 +27,6 @@ class Product extends ModelUuid {
     }
 
     public function productImages(): HasMany {
-        return $this->hasMany(productImages::class);
+        return $this->hasMany(productImage::class);
     }
 }
