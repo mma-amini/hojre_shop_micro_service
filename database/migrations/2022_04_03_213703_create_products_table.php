@@ -16,14 +16,17 @@ return new class extends Migration {
             $table->uuid('brand_id')->nullable();
             $table->string('product_name');
             $table->boolean('is_original')->default(false);
+            $table->string('packaging_dimensions')->nullable();
+            $table->string('packing_weight')->nullable();
+            $table->string('description')->nullable();
             $table->boolean('is_active')->default(false);
             $table->timestamps();
             $table->softDeletes();
-    
+
             $table->foreign('brand_id')->references('id')->on('brands')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *

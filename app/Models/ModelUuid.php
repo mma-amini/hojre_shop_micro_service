@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class ModelUuid extends Model {
+    // public $incrementing = false;
+    // protected $keyType = 'string';
+
     /**
      * Override default id
      *
@@ -18,7 +21,7 @@ class ModelUuid extends Model {
             $model->id = Str::uuid()->toString();
         });
     }
-    
+
     /**
      * Get the value indicating whether the IDs are incrementing.
      *
@@ -27,7 +30,7 @@ class ModelUuid extends Model {
     public function getIncrementing(): bool {
         return false;
     }
-    
+
     /**
      * Get the primary key for the model.
      *
@@ -36,7 +39,7 @@ class ModelUuid extends Model {
     public function getKeyName(): string {
         return 'id';
     }
-    
+
     /**
      * Get the auto-incrementing key type.
      *
