@@ -31,8 +31,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             });
         });
 
+        $router->post('/auth/checkUser', [
+            'uses' => 'UserController@checkUser',
+            'as'   => 'checkUser',
+        ]);
+
         $router->post('/auth/login', [
-            'uses' => '\App\Http\Controllers\AuthController@login',
+            'uses' => 'AuthController@login',
             'as'   => 'login',
             //            'middleware' => 'throttle',
         ]);

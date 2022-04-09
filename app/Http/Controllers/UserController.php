@@ -25,7 +25,6 @@ class UserController extends Controller {
             return $this->sendCode($user);
         } else {
             return ApiController::api(null, "کاربر یافت نشد", 1, 410);
-//            return $this->insertUser($username);
         }
     }
     
