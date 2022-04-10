@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller {
     public function __construct() {
@@ -22,7 +23,24 @@ class UserController extends Controller {
         $user = User::where('username', $username)->first();
         
         if (!empty($user)) {
-            return $this->sendCode($user);
+            $roles  = $user->roles;
+            $isShop = false;
+            foreach ($roles as $role) {
+                if (Str::contains($role->id, "b6b7a78d-70f3-467a-afb8-18c0661cb0c9")) {
+                    $isShop = true;
+                }
+            }
+            if ($isShop) {
+                // Check Shop
+                $shop = $user->shop;
+                if (!empty($shop)) {
+                    return $this->sendCode($user);
+                } else {
+                    return ApiController::api(null, "فروشگاهی برای شما ثبت نشده است", 1, 410);
+                }
+            } else {
+                return ApiController::api(null, "شما دسترسی لازم را ندارید", 1, 410);
+            }
         } else {
             return ApiController::api(null, "کاربر یافت نشد", 1, 410);
         }
