@@ -50,25 +50,74 @@ class FakeDataSeeder extends Seeder {
 //            'shop_phone'       => '02122444798',
 //        ]);
     
-        DB::table('users')->insert([
-            'id'         => "30c5e4ef-fd96-45ab-80d4-d6576fb26ea9",
-            'first_name' => 'محمد',
-            'last_name'  => 'مباشر امینی',
-            'username'   => '09366707862',
-            'password'   => Hash::make("123456"),
+//        DB::table('users')->insert([
+//            'id'         => "30c5e4ef-fd96-45ab-80d4-d6576fb26ea9",
+//            'first_name' => 'محمد',
+//            'last_name'  => 'مباشر امینی',
+//            'username'   => '09366707862',
+//            'password'   => Hash::make("123456"),
+//        ]);
+//
+//        DB::table('role_user')->insert([
+//            'user_id' => '30c5e4ef-fd96-45ab-80d4-d6576fb26ea9',
+//            'role_id' => 'b6b7a78d-70f3-467a-afb8-18c0661cb0c9',
+//        ]);
+//
+//        DB::table('users')->insert([
+//            'id'         => "818635eb-76f6-4a86-85c1-a78a8a316c55",
+//            'first_name' => 'محمد',
+//            'last_name'  => 'مباشر امینی',
+//            'username'   => '09366701122',
+//            'password'   => Hash::make("123456"),
+//        ]);
+    
+        DB::table('categories')->insert([
+            'id'         => "7d6613e6-8832-477b-bc9f-fe08d239e73d",
+            'category_name' => 'خانه و آشپزخانه',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => null,
         ]);
     
-        DB::table('role_user')->insert([
-            'user_id' => '30c5e4ef-fd96-45ab-80d4-d6576fb26ea9',
-            'role_id' => 'b6b7a78d-70f3-467a-afb8-18c0661cb0c9',
+        DB::table('categories')->insert([
+            'id'         => "cee39cc7-5cea-4360-a2b8-90c285d6de0d",
+            'category_name' => 'تهویه - سرمایش - گرمایش',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => '7d6613e6-8832-477b-bc9f-fe08d239e73d',
         ]);
     
-        DB::table('users')->insert([
-            'id'         => "818635eb-76f6-4a86-85c1-a78a8a316c55",
-            'first_name' => 'محمد',
-            'last_name'  => 'مباشر امینی',
-            'username'   => '09366701122',
-            'password'   => Hash::make("123456"),
+        DB::table('categories')->insert([
+            'id'         => "43dd1b0c-b2f4-4318-9829-f65423155bb2",
+            'category_name' => 'لوازم خانگی برقی',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => '7d6613e6-8832-477b-bc9f-fe08d239e73d',
+        ]);
+    
+        DB::table('categories')->insert([
+            'id'         => "26cb4963-5728-4205-9fe6-4a56ca40d5a0",
+            'category_name' => 'قهوه و قهوه ساز',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => '7d6613e6-8832-477b-bc9f-fe08d239e73d',
+        ]);
+        
+        DB::table('categories')->insert([
+            'id'         => "fda46400-9885-4bbf-9bc7-d86617b2eb24",
+            'category_name' => 'کالای دیجیتال',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => null,
+        ]);
+        
+        DB::table('categories')->insert([
+            'id'         => "8c5ff9de-5592-4207-8060-a5b7a525f53b",
+            'category_name' => 'موبایل',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => "fda46400-9885-4bbf-9bc7-d86617b2eb24",
+        ]);
+        
+        DB::table('categories')->insert([
+            'id'         => "f2dfaf6a-c4f7-4c29-92e7-cf7294a14617",
+            'category_name' => 'صوتی و تصویری',
+            'picture'  => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzhB2g__WSjMp8em8G0DPOmivsk36ZVmifnA&usqp=CAU',
+            'parent_id'   => "fda46400-9885-4bbf-9bc7-d86617b2eb24",
         ]);
     }
 }

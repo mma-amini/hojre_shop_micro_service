@@ -13,7 +13,8 @@ return new class extends Migration {
     public function up() {
         Schema::create('order_conditions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title_fa');
+            $table->string('title_en');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -49,6 +49,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
             $router->get('/user/profile', ['as'   => 'profile',
                                            'uses' => 'UserController@profile']);
+    
+            $router->post('/shop/productGroups', ['as'   => 'categories',
+                                                       'uses' => 'CategoryController@categories']);
         });
     });
 });
