@@ -13,13 +13,15 @@ return new class extends Migration {
     public function up() {
         Schema::create('order_conditions', function (Blueprint $table) {
             $table->id();
+            $table->tinyInteger('status_code');
             $table->string('title_fa');
             $table->string('title_en');
+            $table->string('const_title');
             $table->timestamps();
             $table->softDeletes();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *
