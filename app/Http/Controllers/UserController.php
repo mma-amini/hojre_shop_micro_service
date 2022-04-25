@@ -69,7 +69,7 @@ class UserController extends Controller {
     public function profile(Request $request): JsonResponse {
         $user = $request->user();
         
-        $data = ["UserID"    => $user->id,
+        $data = ["UserId"    => $user->id,
                  "FirstName" => $user->first_name,
                  "LastName"  => $user->last_name,
                  "Username"  => $user->username,];

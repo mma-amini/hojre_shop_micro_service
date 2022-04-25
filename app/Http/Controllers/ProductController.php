@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller {
-    public function productCategories(Request $request) {
+class ProductController extends Controller {
+    public function productDesignProducts(Request $request) {
         $this->validate($request, [
             'shopId' => 'required',
         ]);
         
-        $shopId = $request->input('shopId');
+        $shopID = $request->input('shopId');
         
-        $shop = Shop::where('id', $shopId)->first();
+        $shop = Shop::where('id', $shopID)->first();
         
         $categories = $shop->categories;
         $index      = 0;
@@ -37,25 +38,24 @@ class CategoryController extends Controller {
         return ApiController::api($data, null);
     }
     
-    public function shopCategories(Request $request) {
+    public function shopProducts(Request $request) {
         $this->validate($request, [
             'shopId' => 'required',
         ]);
         
-        $shopID = $request->input('shopId');
+        $shopId     = $request->input('shopId');
+        $categoryId = $request->input('categoryId');
         
-        $shop = Shop::where('id', $shopID)->first();
+        $shop = Shop::where('id', $shopId)->first();
         
-        $categories = $shop->categories;
+        $products = $shop->products;
         
         $data = array();
-        foreach ($categories as $category) {
-            $newCat = ["CategoryId"   => $category->id,
-                       "CategoryName" => $category->category_name,
-                       "Picture"      => $category->picture,
-                       "ParentId"     => $category->parent_id];
+        foreach ($products as $product) {
+            $newPro = ["ProductId"   => $product->id,
+                       "ProductName" => $product->Product_name];
             
-            array_push($data, $newCat);
+            array_push($data, $newPro);
         }
         
         return ApiController::api($data, null);

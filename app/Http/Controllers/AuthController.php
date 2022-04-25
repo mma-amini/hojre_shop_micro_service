@@ -41,11 +41,11 @@ class AuthController extends ATC {
                     //convert token response to json string
                     $token = json_decode($tokenResponse->content());
         
-                    $data = ["UserID"       => $user->id,
+                    $data = ["UserId"       => $user->id,
                              "Username"     => $user->username,
                              "FirstName"    => $user->first_name,
                              "LastName"     => $user->last_name,
-                             "ShopID"       => $shop->id,
+                             "ShopId"       => $shop->id,
                              "ShopName"     => $shop->shop_name,
                              "TokenType"    => $token->token_type,
                              "AccessToken"  => $token->access_token,
