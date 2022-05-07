@@ -4,16 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Shop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller {
     public function productCategories(Request $request) {
-        $this->validate($request, [
-            'shopId' => 'required',
-        ]);
-        
-        $shopId = $request->input('shopId');
-        
-        $shop = Shop::where('id', $shopId)->first();
+        $shop = Auth::user()->shop->first();
         
         $categories = $shop->categories;
         $index      = 0;
@@ -38,13 +33,7 @@ class CategoryController extends Controller {
     }
     
     public function shopCategories(Request $request) {
-        $this->validate($request, [
-            'shopId' => 'required',
-        ]);
-        
-        $shopID = $request->input('shopId');
-        
-        $shop = Shop::where('id', $shopID)->first();
+        $shop = Auth::user()->shop->first();
         
         $categories = $shop->categories;
         

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -22,8 +23,8 @@ class Product extends ModelUuid {
         return $this->hasMany(Design::class);
     }
 
-    public function brand(): HasOne {
-        return $this->hasOne(Brand::class);
+    public function brand(): BelongsTo {
+        return $this->belongsTo(Brand::class);
     }
 
     public function productImages(): HasMany {

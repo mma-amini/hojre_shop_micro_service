@@ -12,10 +12,10 @@ return new class extends Migration {
      */
     public function up() {
         Schema::create('product_shop', function (Blueprint $table) {
-            $table->uuid('products_id');
+            $table->uuid('product_id');
             $table->uuid('shop_id');
             
-            $table->foreign('products_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('shop_id')->references('id')->on('shops')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }

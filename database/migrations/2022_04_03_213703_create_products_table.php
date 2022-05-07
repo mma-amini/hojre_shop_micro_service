@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('product_dimensions')->nullable();
             $table->integer('packing_weight', false, true)->default(0);
             $table->integer('product_weight', false, true)->default(0);
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->boolean('is_active')->default(false);
             $table->timestamps();
             $table->softDeletes();

@@ -129,19 +129,24 @@ class FakeDataSeeder extends Seeder {
     //         'parent_id'   => "fda46400-9885-4bbf-9bc7-d86617b2eb24",
     //     ]);
 
-        DB::table('products')->insert([
-            'id' =>'d4f1daea-ad2d-4f83-bd1a-1ad02bfb3705',
-            'product_name' => 'یک کالای خوب',
-        ]);
+//        DB::table('products')->insert([
+//            'id' =>'d4f1daea-ad2d-4f83-bd1a-1ad02bfb3705',
+//            'product_name' => 'یک کالای خوب',
+//        ]);
+//
+//        DB::table('category_product')->insert([
+//            'category_id' => 'fda46400-9885-4bbf-9bc7-d86617b2eb24',
+//            'product_id' => 'd4f1daea-ad2d-4f83-bd1a-1ad02bfb3705',
+//        ]);
+//
+//        DB::table('category_product')->insert([
+//            'category_id' => '8c5ff9de-5592-4207-8060-a5b7a525f53b',
+//            'product_id' => 'd4f1daea-ad2d-4f83-bd1a-1ad02bfb3705',
+//        ]);
 
-        DB::table('category_product')->insert([
-            'category_id' => 'fda46400-9885-4bbf-9bc7-d86617b2eb24',
+        DB::table('product_shop')->insert([
             'product_id' => 'd4f1daea-ad2d-4f83-bd1a-1ad02bfb3705',
-        ]);
-
-        DB::table('category_product')->insert([
-            'category_id' => '8c5ff9de-5592-4207-8060-a5b7a525f53b',
-            'product_id' => 'd4f1daea-ad2d-4f83-bd1a-1ad02bfb3705',
+            'shop_id' => 'abc76d9c-1778-469b-9621-0316e713f59a',
         ]);
     }
 }

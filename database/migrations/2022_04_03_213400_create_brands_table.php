@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('brands', function (Blueprint $table) {
             $table->foreignUuid('id')->primary();
             $table->string('brand_name');
-            $table->string('picture');
+            $table->string('picture')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
