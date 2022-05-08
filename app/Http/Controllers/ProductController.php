@@ -7,6 +7,7 @@ use App\Models\Shop;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller {
     public function productDesignProducts(Request $request): JsonResponse {
@@ -40,21 +41,37 @@ class ProductController extends Controller {
         
         $products = $shop->products;
         
-        $data = array();
+        $approvedProducts = array();
+        
         foreach ($products as $product) {
+            if (!empty($categoryId)) {
+                $categories = $product->categories;
+                foreach ($categories as $category) {
+                    if (Str::contains($category->id, $categoryId)) {
+                        array_push($approvedProducts, $product);
+                    }
+                }
+            } else {
+                array_push($approvedProducts, $product);
+            }
+        }
+    
+        $data = array();
+        
+        foreach ($approvedProducts as $product) {
             $brand         = $product->brand;
             $productImages = $product->productImages;
-            
+    
             $pictures = array();
             foreach ($productImages as $productImage) {
                 $picture = [
                     "Picture" => $productImage->picture,
                     "IsMain"  => $productImage->is_main == 1,
                 ];
-                
+        
                 array_push($pictures, $picture);
             }
-            
+    
             $newPro = [
                 "ProductId"         => $product->id,
                 "ProductName"       => $product->product_name,
@@ -71,7 +88,7 @@ class ProductController extends Controller {
                 ],
                 "Pictures"          => $pictures,
             ];
-            
+    
             array_push($data, $newPro);
         }
         
