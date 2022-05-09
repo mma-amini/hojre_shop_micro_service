@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class ProductController extends Controller {
     public function productDesignProducts(Request $request): JsonResponse {
         $shop = Auth::user()->shop->first();
-        
+
         $categories = $shop->categories;
         $index      = 0;
         foreach ($categories as $category) {
@@ -28,21 +28,21 @@ class ProductController extends Controller {
                        "CategoryName" => $category->category_name,
                        "Picture"      => $category->picture,
                        "ParentId"     => $category->parent_id];
-            
+
             array_push($data, $newCat);
         }
-        
+
         return ApiController::api($data, null);
     }
-    
+
     public function shopProducts(Request $request): JsonResponse {
         $shop       = Auth::user()->shop->first();
         $categoryId = $request->input('categoryId');
-        
+
         $products = $shop->products;
-        
+
         $approvedProducts = array();
-        
+
         foreach ($products as $product) {
             if (!empty($categoryId)) {
                 $categories = $product->categories;
@@ -55,23 +55,25 @@ class ProductController extends Controller {
                 array_push($approvedProducts, $product);
             }
         }
-    
+
         $data = array();
-        
+
         foreach ($approvedProducts as $product) {
             $brand         = $product->brand;
+            $approvedDesigns = $product->designs->where('is_active', 1);
+            $notApprovedDesigns = $product->designs->where('is_active', 0);
             $productImages = $product->productImages;
-    
+
             $pictures = array();
             foreach ($productImages as $productImage) {
                 $picture = [
                     "Picture" => $productImage->picture,
                     "IsMain"  => $productImage->is_main == 1,
                 ];
-        
+
                 array_push($pictures, $picture);
             }
-    
+
             $newPro = [
                 "ProductId"         => $product->id,
                 "ProductName"       => $product->product_name,
@@ -81,6 +83,8 @@ class ProductController extends Controller {
                 "ProductDimensions" => $product->product_dimensions,
                 "PackingWeight"     => $product->packing_weight,
                 "ProductWeight"     => $product->product_weight,
+                'ApprovedProductDesignsCount' => count($approvedDesigns),
+                'NotApprovedProductDesignsCount' => count($notApprovedDesigns),
                 "Brand"             => [
                     "Id"      => $brand->id,
                     "Name"    => $brand->brand_name,
@@ -88,10 +92,10 @@ class ProductController extends Controller {
                 ],
                 "Pictures"          => $pictures,
             ];
-    
+
             array_push($data, $newPro);
         }
-        
+
         return ApiController::api($data, null);
     }
 }

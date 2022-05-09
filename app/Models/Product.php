@@ -19,7 +19,7 @@ class Product extends ModelUuid {
         return $this->belongsToMany(Shop::class, 'product_shop');
     }
 
-    public function deigns(): HasMany {
+    public function designs(): HasMany {
         return $this->hasMany(Design::class);
     }
 
