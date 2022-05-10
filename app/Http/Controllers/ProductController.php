@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class ProductController extends Controller {
     public function productDesignProducts(Request $request): JsonResponse {
         $shop = Auth::user()->shop->first();
-
+        
         $categories = $shop->categories;
         $index      = 0;
         foreach ($categories as $category) {
@@ -24,78 +24,81 @@ class ProductController extends Controller {
         }
         $data = array();
         foreach ($categories as $category) {
-            $newCat = ["CategoryId"   => $category->id,
-                       "CategoryName" => $category->category_name,
-                       "Picture"      => $category->picture,
-                       "ParentId"     => $category->parent_id];
-
+            $newCat = [
+                "CategoryId"   => $category->id,
+                "CategoryName" => $category->category_name,
+                "Picture"      => $category->picture,
+                "ParentId"     => $category->parent_id
+            ];
+            
             array_push($data, $newCat);
         }
-
+        
         return ApiController::api($data, null);
     }
-
+    
     public function shopProducts(Request $request): JsonResponse {
         $shop       = Auth::user()->shop->first();
         $categoryId = $request->input('categoryId');
-
+        
         $products = $shop->products;
-
+        
         $approvedProducts = array();
-
-        foreach ($products as $product) {
-            if (!empty($categoryId)) {
+        
+        if (!empty($categoryId)) {
+            foreach ($products as $product) {
                 $categories = $product->categories;
                 foreach ($categories as $category) {
                     if (Str::contains($category->id, $categoryId)) {
-                        array_push($approvedProducts, $product);
+                        $approvedProducts[] = $product;
                     }
                 }
-            } else {
-                array_push($approvedProducts, $product);
             }
+        } else {
+            $approvedProducts = $products;
         }
-
+        
         $data = array();
-
+        
         foreach ($approvedProducts as $product) {
-            $brand         = $product->brand;
-            $approvedDesigns = $product->designs->where('is_active', 1);
+            $brand              = $product->brand;
+            $approvedDesigns    = $product->designs->where('is_active', 1);
             $notApprovedDesigns = $product->designs->where('is_active', 0);
-            $productImages = $product->productImages;
-
+            $productImages      = $product->productImages;
+            
             $pictures = array();
             foreach ($productImages as $productImage) {
                 $picture = [
                     "Picture" => $productImage->picture,
                     "IsMain"  => $productImage->is_main == 1,
                 ];
-
+                
                 array_push($pictures, $picture);
             }
-
+            
             $newPro = [
-                "ProductId"         => $product->id,
-                "ProductName"       => $product->product_name,
-                "IsOriginal"        => $product->is_original == 1,
-                "Description"       => $product->description,
-                "PackingDimensions" => $product->packaging_dimensions,
-                "ProductDimensions" => $product->product_dimensions,
-                "PackingWeight"     => $product->packing_weight,
-                "ProductWeight"     => $product->product_weight,
-                'ApprovedProductDesignsCount' => count($approvedDesigns),
+                "ProductId"                      => $product->id,
+                "ProductName"                    => $product->product_name,
+                "IsOriginal"                     => $product->is_original == 1,
+                "Description"                    => $product->description,
+                "PackingDimensions"              => $product->packaging_dimensions,
+                "ProductDimensions"              => $product->product_dimensions,
+                "PackingWeight"                  => $product->packing_weight,
+                "ProductWeight"                  => $product->product_weight,
+                'ApprovedProductDesignsCount'    => count($approvedDesigns),
                 'NotApprovedProductDesignsCount' => count($notApprovedDesigns),
-                "Brand"             => [
+                "Brand"                          => [
                     "Id"      => $brand->id,
                     "Name"    => $brand->brand_name,
                     "Picture" => $brand->picture,
                 ],
-                "Pictures"          => $pictures,
+                "Pictures"                       => $pictures,
+                "IsActive"                       => $product->is_active == 1,
             ];
-
+            
             array_push($data, $newPro);
         }
-
+        
         return ApiController::api($data, null);
     }
 }
