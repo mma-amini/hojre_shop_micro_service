@@ -15,4 +15,8 @@ class Category extends ModelUuid {
     public function products(): BelongsToMany {
         return $this->belongsToMany(Product::class, 'category_product');
     }
+    
+    public function specs(): BelongsToMany {
+        return $this->belongsToMany(Spec::class);
+    }
 }

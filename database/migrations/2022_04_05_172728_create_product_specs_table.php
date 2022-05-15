@@ -13,12 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('specification_values', function (Blueprint $table) {
+        Schema::create('product_specs', function (Blueprint $table) {
             $table->foreignUuid('id')->primary();
-            $table->string('title');
+            $table->uuid('product_id');
+            $table->uuid('spec_item_id');
+            $table->string('spec_data');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('spec_item_id')->references('id')->on('spec_items')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('specification_values');
+        Schema::dropIfExists('product_specs');
     }
 };
