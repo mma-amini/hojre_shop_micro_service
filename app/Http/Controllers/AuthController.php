@@ -23,7 +23,7 @@ class AuthController extends ATC {
             $user = User::where('username', $username)->first();
             
             // Check roles
-            $roles = $user->roles;
+            $roles  = $user->roles;
             $isShop = false;
             foreach ($roles as $role) {
                 if (Str::contains($role->id, "b6b7a78d-70f3-467a-afb8-18c0661cb0c9")) {
@@ -37,21 +37,23 @@ class AuthController extends ATC {
                 if (!empty($shop)) {
                     // Genereting token
                     $tokenResponse = parent::issueToken($request);
-        
+                    
                     //convert token response to json string
                     $token = json_decode($tokenResponse->content());
-        
-                    $data = ["UserId"       => $user->id,
-                             "Username"     => $user->username,
-                             "FirstName"    => $user->first_name,
-                             "LastName"     => $user->last_name,
-                             "ShopId"       => $shop->id,
-                             "ShopName"     => $shop->shop_name,
-                             "TokenType"    => $token->token_type,
-                             "AccessToken"  => $token->access_token,
-                             "RefreshToken" => $token->refresh_token,
-                             "ExpiresIn"    => $token->expires_in,];
-        
+                    
+                    $data = [
+                        "UserId"       => $user->id,
+                        "Username"     => $user->username,
+                        "FirstName"    => $user->first_name,
+                        "LastName"     => $user->last_name,
+                        "ShopId"       => $shop->id,
+                        "ShopName"     => $shop->shop_name,
+                        "TokenType"    => $token->token_type,
+                        "AccessToken"  => $token->access_token,
+                        "RefreshToken" => $token->refresh_token,
+                        "ExpiresIn"    => $token->expires_in,
+                    ];
+                    
                     return ApiController::api($data, null);
                 } else {
                     return ApiController::api(null, "فروشگاهی برای شما ثبت نشده است", 1, 410);

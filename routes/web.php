@@ -25,11 +25,11 @@ $router->get('/getUser', 'UserController@getUser');
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['prefix' => 'v1'], function () use ($router) {
-        $router->group(['prefix' => 'oauth'], function () use ($router) {
-//            $router->post("/token", function () {
-//                return ApiController::api(null, "امکان اجرای درخواست وجود ندارد", 1, 410, 410);
-//            });
-        });
+//        $router->group(['prefix' => 'oauth'], function () use ($router) {
+////            $router->post("/token", function () {
+////                return ApiController::api(null, "امکان اجرای درخواست وجود ندارد", 1, 410, 410);
+////            });
+//        });
         
         $router->post('/auth/checkUser', [
             'uses' => 'UserController@checkUser',
@@ -47,17 +47,30 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 return $router->app->version();
             });
             
-            $router->get('/user/profile', ['as'   => 'profile',
-                                           'uses' => 'UserController@profile']);
+            $router->get('/user/profile', [
+                'as'   => 'profile',
+                'uses' => 'UserController@profile'
+            ]);
             
-            $router->get('/shop/productGroups', ['as'   => 'category.product',
-                                                 'uses' => 'CategoryController@shopCategories']);
+            $router->get('/shop/productGroups', [
+                'as'   => 'category.product',
+                'uses' => 'CategoryController@shopCategories'
+            ]);
             
-            $router->get('/shop/shopGroups', ['as'   => 'category.shop',
-                                              'uses' => 'CategoryController@shopCategories']);
+            $router->get('/shop/shopGroups', [
+                'as'   => 'category.shop',
+                'uses' => 'CategoryController@shopCategories'
+            ]);
             
-            $router->get('/shop/shopProducts', ['as'   => 'product.shop',
-                                                'uses' => 'ProductController@shopProducts']);
+            $router->get('/shop/groupSpecs', [
+                'as'   => 'category.specs',
+                'uses' => 'CategoryController@categorySpecs'
+            ]);
+            
+            $router->get('/shop/shopProducts', [
+                'as'   => 'product.shop',
+                'uses' => 'ProductController@shopProducts'
+            ]);
         });
     });
 });
