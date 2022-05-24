@@ -141,11 +141,6 @@ class FakeDataSeeder extends Seeder {
         
         DB::table('category_shop')->insert([
                                                'shop_id'     => "abc76d9c-1778-469b-9621-0316e713f59a",
-                                               'category_id' => "fda46400-9885-4bbf-9bc7-d86617b2eb24",
-                                           ]);
-        
-        DB::table('category_shop')->insert([
-                                               'shop_id'     => "abc76d9c-1778-469b-9621-0316e713f59a",
                                                'category_id' => "f2dfaf6a-c4f7-4c29-92e7-cf7294a14617",
                                            ]);
         
