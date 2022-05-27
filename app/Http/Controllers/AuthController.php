@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -20,7 +21,9 @@ class AuthController extends ATC {
             $username = $body["username"];
             
             // Fetching the User
-            $user = User::where('username', $username)->first();
+            $user          = User::where('username', $username)->first();
+            $client        = DB::table('oauth_clients')->where('id', '2')->first();
+            $client_secret = $client->secret;
             
             // Check roles
             $roles  = $user->roles;
@@ -52,6 +55,7 @@ class AuthController extends ATC {
                         "AccessToken"  => $token->access_token,
                         "RefreshToken" => $token->refresh_token,
                         "ExpiresIn"    => $token->expires_in,
+                        'ClientSecret' => $client_secret,
                     ];
                     
                     return ApiController::api($data, null);

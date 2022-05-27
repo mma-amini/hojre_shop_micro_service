@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -51,9 +52,15 @@ class UserController extends Controller {
         $user->password = Hash::make($code);
         $user->save();
         
-        $data = ['Username' => $user->username,
-                 'Minutes'  => 1,
-                 'Code'     => $code];
+        $client        = DB::table('oauth_clients')->where('id', '2')->first();
+        $client_secret = $client->secret;
+        
+        $data = [
+            'Username'     => $user->username,
+            'Minutes'      => 1,
+            'Code'         => $code,
+            'ClientSecret' => $client_secret,
+        ];
         
         return ApiController::api($data);
     }
@@ -69,10 +76,12 @@ class UserController extends Controller {
     public function profile(Request $request): JsonResponse {
         $user = $request->user();
         
-        $data = ["UserId"    => $user->id,
-                 "FirstName" => $user->first_name,
-                 "LastName"  => $user->last_name,
-                 "Username"  => $user->username,];
+        $data = [
+            "UserId"    => $user->id,
+            "FirstName" => $user->first_name,
+            "LastName"  => $user->last_name,
+            "Username"  => $user->username,
+        ];
         
         return ApiController::api($data, null, 1, 200);
     }
