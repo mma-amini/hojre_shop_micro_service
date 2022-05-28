@@ -71,6 +71,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 'as'   => 'product.shop',
                 'uses' => 'ProductController@shopProducts'
             ]);
+            
+            $router->get('/shop/getDesigns', [
+                'as'   => 'design.all',
+                'uses' => 'DesignController@getDesigns'
+            ]);
         });
     });
 });
