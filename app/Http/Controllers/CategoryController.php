@@ -87,6 +87,7 @@ class CategoryController extends Controller {
                 
                 $newSpecItem = [
                     "SpecItemId" => $specItem->id,
+                    "IsRequired" => $specItem->is_required,
                     "InputID"    => $specItem->input_id,
                     "InputName"  => $inputType->name,
                     "InputTitle" => $inputType->title,
