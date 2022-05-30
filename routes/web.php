@@ -76,6 +76,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 'as'   => 'design.all',
                 'uses' => 'DesignController@getDesigns'
             ]);
+            
+            $router->get('/shop/brands', [
+                'as'   => 'brand.all',
+                'uses' => 'BrandController@brands'
+            ]);
         });
     });
 });

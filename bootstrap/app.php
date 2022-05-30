@@ -5,9 +5,7 @@ use Dusterio\LumenPassport\LumenPassport;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__)
-))->bootstrap();
+(new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'Asia/Tehran'));
 
@@ -22,9 +20,7 @@ date_default_timezone_set(env('APP_TIMEZONE', 'Asia/Tehran'));
 |
 */
 
-$app = new Laravel\Lumen\Application(
-    dirname(__DIR__)
-);
+$app = new Laravel\Lumen\Application(dirname(__DIR__));
 
 $app->withFacades();
 
@@ -41,15 +37,9 @@ $app->withEloquent();
 |
 */
 
-$app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
-);
+$app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class, App\Exceptions\Handler::class);
 
-$app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
-);
+$app->singleton(Illuminate\Contracts\Console\Kernel::class, App\Console\Kernel::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -77,8 +67,12 @@ $app->configure('auth');
 */
 
 $app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
-]);
+                          'auth' => App\Http\Middleware\Authenticate::class,
+                      ]);
+
+$app->middleware([
+                     App\Http\Middleware\CorsMiddleware::class
+                 ]);
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +94,7 @@ $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 
 Dusterio\LumenPassport\LumenPassport::routes($app->router, ['prefix' => 'api/v1/oauth']);
 
+$app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -112,8 +107,8 @@ Dusterio\LumenPassport\LumenPassport::routes($app->router, ['prefix' => 'api/v1/
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
+                        'namespace' => 'App\Http\Controllers',
+                    ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
 
