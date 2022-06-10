@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\Helpers;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Shop;
+use App\Models\ShopProduct;
+use Faker\Core\Uuid;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,11 +91,11 @@ class ProductController extends Controller {
                 "ProductWeight"                  => $product->product_weight,
                 'ApprovedProductDesignsCount'    => count($approvedDesigns),
                 'NotApprovedProductDesignsCount' => count($notApprovedDesigns),
-                "Brand"                          => [
+                "Brand"                          => $brand != null ?[
                     "Id"      => $brand->id,
                     "Name"    => $brand->brand_name,
                     "Picture" => $brand->picture,
-                ],
+                ] : null,
                 "Pictures"                       => $pictures,
                 "IsActive"                       => $product->is_active == 1,
             ];
@@ -100,5 +104,58 @@ class ProductController extends Controller {
         }
         
         return ApiController::api($data, null);
+    }
+    
+    public function insertProduct(Request $request): JsonResponse {
+        $productName           = $request->input('ProductName');
+        $productGroupID        = $request->input('ProductGroupID');
+        $brandId               = $request->input('BrandId');
+        $brandName             = $request->input('BrandName');
+        $productPackWeight     = $request->input('ProductPackWeight');
+        $productPackLength     = $request->input('ProductPackLength');
+        $productPackWidth      = $request->input('ProductPackWidth');
+        $productPackHeight     = $request->input('ProductPackHeight');
+        $productPackWeightType = $request->input('ProductPackWeightType');
+        $description           = $request->input('Description');
+        $original              = $request->input('Original');
+        $sections              = $request->input('Sections');
+        
+        return ApiController::api(Helpers::isNullOrEmptyString($brandId));
+        
+        if (Helpers::isNullOrEmptyString($brandId) && !(Helpers::isNullOrEmptyString($brandName))) {
+            $brand             = new Brand();
+//            $brand->id         = Str::uuid()->toString();
+            $brand->brand_name = $brandName;
+            $brand->is_active  = 1;
+            
+            $brand->save();
+            $brandId = $brand->id;
+        }
+        
+        $product = new Product();
+        
+//        $product->id                   = Str::uuid()->toString();
+        $product->product_name         = $productName;
+        $product->brand_id             = !(Helpers::isNullOrEmptyString($brandId)) ? $brandId : null;
+        $product->is_original          = $original ? 1 : 0;
+        $product->packaging_dimensions = $productPackWidth . "x" . $productPackHeight . "x" . $productPackLength;
+        $product->packing_weight       = $productPackWeight . " " . $productPackWeightType;
+        $product->product_dimensions   = $productPackWidth . "x" . $productPackHeight . "x" . $productPackLength;
+        $product->product_weight       = $productPackWeight . " " . $productPackWeightType;
+        $product->description          = $description;
+        
+        $isSaved = $product->save();
+        
+        if ($isSaved) {
+            $productId = $product->id;
+    
+            $shop = Auth::user()->shop->first();
+            
+            $product->shops()->attach($shop->id);
+    
+            return ApiController::api($productId);
+        } else {
+            return ApiController::api(null, "اشکال در روند برنامه", 410);
+        }
     }
 }

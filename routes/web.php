@@ -81,6 +81,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
                 'as'   => 'brand.all',
                 'uses' => 'BrandController@brands'
             ]);
+            
+            $router->post('/shop/insertProduct', [
+                'as'   => 'product.inset',
+                'uses' => 'ProductController@insertProduct'
+            ]);
         });
     });
 });
