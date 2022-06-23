@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Libraries\Helpers;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Shop;
 use App\Models\ShopProduct;
 use Faker\Core\Uuid;
@@ -91,7 +92,7 @@ class ProductController extends Controller {
                 "ProductWeight"                  => $product->product_weight,
                 'ApprovedProductDesignsCount'    => count($approvedDesigns),
                 'NotApprovedProductDesignsCount' => count($notApprovedDesigns),
-                "Brand"                          => $brand != null ?[
+                "Brand"                          => $brand != null ? [
                     "Id"      => $brand->id,
                     "Name"    => $brand->brand_name,
                     "Picture" => $brand->picture,
@@ -120,11 +121,8 @@ class ProductController extends Controller {
         $original              = $request->input('Original');
         $sections              = $request->input('Sections');
         
-        return ApiController::api(Helpers::isNullOrEmptyString($brandId));
-        
         if (Helpers::isNullOrEmptyString($brandId) && !(Helpers::isNullOrEmptyString($brandName))) {
             $brand             = new Brand();
-//            $brand->id         = Str::uuid()->toString();
             $brand->brand_name = $brandName;
             $brand->is_active  = 1;
             
@@ -134,7 +132,6 @@ class ProductController extends Controller {
         
         $product = new Product();
         
-//        $product->id                   = Str::uuid()->toString();
         $product->product_name         = $productName;
         $product->brand_id             = !(Helpers::isNullOrEmptyString($brandId)) ? $brandId : null;
         $product->is_original          = $original ? 1 : 0;
@@ -148,12 +145,44 @@ class ProductController extends Controller {
         
         if ($isSaved) {
             $productId = $product->id;
-    
+            
             $shop = Auth::user()->shop->first();
             
             $product->shops()->attach($shop->id);
+            
+            $data = ["ProductId" => $productId];
+            return ApiController::api($data);
+        } else {
+            return ApiController::api(null, "اشکال در روند برنامه", 410);
+        }
+    }
     
-            return ApiController::api($productId);
+    public function insertProductImage(Request $request): JsonResponse {
+        $id        = $request->input('Id');
+        $productId = $request->input('ProductId');
+        $isMain    = $request->input('IsMain');
+        $sort      = $request->input('Sort');
+        $image     = $request->file('Image');
+        
+        $destination_path = './productImages';
+        
+        $imageData = $image->move($destination_path, $id . ".jpg");
+        
+        if ($imageData != null && $imageData->getFilename() != null) {
+            
+            $productImage             = new ProductImage();
+            $productImage->id         = $id;
+            $productImage->product_id = $productId;
+            $productImage->picture    = "/productImages/" . $id . ".jpg";
+            $productImage->is_main    = $isMain ? 1 : 0;
+            
+            $isSaved = $productImage->save();
+            
+            if ($isSaved) {
+                return ApiController::api();
+            } else {
+                return ApiController::api(null, "اشکال در روند برنامه", 410);
+            }
         } else {
             return ApiController::api(null, "اشکال در روند برنامه", 410);
         }

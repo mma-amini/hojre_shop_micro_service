@@ -83,8 +83,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
             ]);
             
             $router->post('/shop/insertProduct', [
-                'as'   => 'product.inset',
+                'as'   => 'product.insert',
                 'uses' => 'ProductController@insertProduct'
+            ]);
+            
+            $router->post('/shop/insertProductImage', [
+                'as'   => 'product.insert.image',
+                'uses' => 'ProductController@insertProductImage'
             ]);
         });
     });
