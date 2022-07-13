@@ -10,19 +10,19 @@ class BrandController extends Controller {
     public function brands(Request $request): JsonResponse {
         $keyword = $request->input('keyword');
         $brands  = Brand::where('brand_name', 'like', '%' . $keyword . '%')->get();
-        
+
         $data = array();
-        
+
         foreach ($brands as $brand) {
             $newBrand = [
-                "Id"      => $brand->id,
-                "Name"    => $brand->brand_name,
-                "Picture" => $brand->picture,
+                "id"      => $brand->id,
+                "name"    => $brand->brand_name,
+                "picture" => $brand->picture,
             ];
-            
+
             array_push($data, $newBrand);
         }
-        
+
         return ApiController::api($data);
     }
 }

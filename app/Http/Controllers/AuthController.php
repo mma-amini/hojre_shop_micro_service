@@ -16,15 +16,15 @@ class AuthController extends ATC {
     public function login(ServerRequestInterface $request) {
         try {
             $body = $request->getParsedBody();
-            
+
             // Fetching username from request
             $username = $body["username"];
-            
+
             // Fetching the User
             $user          = User::where('username', $username)->first();
             $client        = DB::table('oauth_clients')->where('id', '2')->first();
             $client_secret = $client->secret;
-            
+
             // Check roles
             $roles  = $user->roles;
             $isShop = false;
@@ -33,31 +33,31 @@ class AuthController extends ATC {
                     $isShop = true;
                 }
             }
-            
+
             if ($isShop) {
                 // Check Shop
                 $shop = $user->shop;
                 if (!empty($shop)) {
                     // Genereting token
                     $tokenResponse = parent::issueToken($request);
-                    
+
                     //convert token response to json string
                     $token = json_decode($tokenResponse->content());
-                    
+
                     $data = [
-                        "UserId"       => $user->id,
-                        "Username"     => $user->username,
-                        "FirstName"    => $user->first_name,
-                        "LastName"     => $user->last_name,
-                        "ShopId"       => $shop->id,
-                        "ShopName"     => $shop->shop_name,
-                        "TokenType"    => $token->token_type,
-                        "AccessToken"  => $token->access_token,
-                        "RefreshToken" => $token->refresh_token,
-                        "ExpiresIn"    => $token->expires_in,
-                        'ClientSecret' => $client_secret,
+                        "userId"       => $user->id,
+                        "username"     => $user->username,
+                        "firstName"    => $user->first_name,
+                        "lastName"     => $user->last_name,
+                        "shopId"       => $shop->id,
+                        "shopName"     => $shop->shop_name,
+                        "tokenType"    => $token->token_type,
+                        "accessToken"  => $token->access_token,
+                        "refreshToken" => $token->refresh_token,
+                        "expiresIn"    => $token->expires_in,
+                        'clientSecret' => $client_secret,
                     ];
-                    
+
                     return ApiController::api($data, null);
                 } else {
                     return ApiController::api(null, "فروشگاهی برای شما ثبت نشده است", 1, 410);
@@ -66,9 +66,9 @@ class AuthController extends ATC {
                 return ApiController::api(null, "شما دسترسی لازم را ندارید", 1, 410);
             }
         } catch (OAuthServerException $e) {
-            return ['Message' => 'The suer credentials were incorrect!'];
+            return ['message' => 'The suer credentials were incorrect!'];
         } catch (\Exception $e) {
-            return ['Message' => 'Exception: ' . $e];
+            return ['message' => 'Exception: ' . $e];
         }
     }
 }
