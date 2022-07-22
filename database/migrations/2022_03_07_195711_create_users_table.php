@@ -12,7 +12,7 @@ class CreateUsersTable extends Migration {
      */
     public function up() {
         Schema::create('users', function (Blueprint $table) {
-             $table->foreignUuid('id')->primary();
+            $table->foreignUuid('id')->primary();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('username')->unique();

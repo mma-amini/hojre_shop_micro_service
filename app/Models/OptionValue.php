@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SpecValue extends ModelUuid {
+class OptionValue extends ModelUuid {
     use SoftDeletes;
-    
-    public function specItems(): BelongsToMany {
-        return $this->belongsToMany(SpecItem::class);
+
+    public function optionItems(): BelongsToMany {
+        return $this->belongsToMany(OptionItem::class);
     }
 }

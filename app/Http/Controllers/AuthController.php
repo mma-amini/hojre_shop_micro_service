@@ -21,12 +21,12 @@ class AuthController extends ATC {
             $username = $body["username"];
 
             // Fetching the User
-            $user          = User::where('username', $username)->first();
-            $client        = DB::table('oauth_clients')->where('id', '2')->first();
+            $user = User::where('username', $username)->first();
+            $client = DB::table('oauth_clients')->where('id', '2')->first();
             $client_secret = $client->secret;
 
             // Check roles
-            $roles  = $user->roles;
+            $roles = $user->roles;
             $isShop = false;
             foreach ($roles as $role) {
                 if (Str::contains($role->id, "b6b7a78d-70f3-467a-afb8-18c0661cb0c9")) {

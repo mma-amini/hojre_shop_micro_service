@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class BrandController extends Controller {
     public function brands(Request $request): JsonResponse {
         $keyword = $request->input('keyword');
-        $brands  = Brand::where('brand_name', 'like', '%' . $keyword . '%')->get();
+        $brands = Brand::where('brand_name', 'like', '%' . $keyword . '%')->get();
 
         $data = array();
 

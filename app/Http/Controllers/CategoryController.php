@@ -13,7 +13,7 @@ class CategoryController extends Controller {
         $shop = Auth::user()->shop->first();
 
         $categories = $shop->categories;
-        $index      = 0;
+        $index = 0;
         foreach ($categories as $category) {
             $products = $category->products;
             if (sizeof($products) == 0) {
@@ -24,7 +24,7 @@ class CategoryController extends Controller {
         $data = array();
         foreach ($categories as $category) {
             $newCat = [
-                "categoryId"   => $category->id,
+                "id"           => $category->id,
                 "categoryName" => $category->category_name,
                 "picture"      => $category->picture,
                 "parentId"     => $category->parent_id
@@ -44,7 +44,7 @@ class CategoryController extends Controller {
         $data = array();
         foreach ($categories as $category) {
             $newCat = [
-                "categoryId"   => $category->id,
+                "id"           => $category->id,
                 "categoryName" => $category->category_name,
                 "picture"      => $category->picture,
                 "parentId"     => $category->parent_id
@@ -56,7 +56,7 @@ class CategoryController extends Controller {
         return ApiController::api($data, null);
     }
 
-    public function categorySpecs(Request $request) {
+    public function categoryOptions(Request $request): JsonResponse {
         $categoryId = $request->input('categoryId');
 
         $category = Category::find($categoryId);
@@ -64,49 +64,49 @@ class CategoryController extends Controller {
             return ApiController::api(null, "شناسه دسته بندی اشتباه است");
         }
 
-        $specs = $category->specs;
+        $options = $category->options;
 
-        $specsData = array();
-        foreach ($specs as $spec) {
-            $specItems = $spec->specItems;
+        $optionsData = array();
+        foreach ($options as $option) {
+            $optionItems = $option->optionItems;
 
-            $specItemsData = array();
-            foreach ($specItems as $specItem) {
-                $specValues = $specItem->specValues;
-                $inputType  = $specItem->input;
+            $optionItemsData = array();
+            foreach ($optionItems as $optionItem) {
+                $optionValues = $optionItem->optionValues;
+                $inputType = $optionItem->input;
 
-                $specValuesData = array();
-                foreach ($specValues as $specValue) {
-                    $newSpecValue = [
-                        "specValueId" => $specValue->id,
-                        "title"       => $specValue->title,
+                $optionValuesData = array();
+                foreach ($optionValues as $optionValue) {
+                    $newOptionValue = [
+                        "id"    => $optionValue->id,
+                        "title" => $optionValue->title,
+                        "value" => $optionValue->title,
                     ];
 
-                    array_push($specValuesData, $newSpecValue);
+                    array_push($optionValuesData, $newOptionValue);
                 }
 
-                $newSpecItem = [
-                    "specItemId" => $specItem->id,
-                    "isRequired" => $specItem->is_required,
-                    "inputID"    => $specItem->input_id,
+                $newOptionItem = [
+                    "id"         => $optionItem->id,
+                    "isRequired" => $optionItem->is_required,
                     "inputName"  => $inputType->name,
                     "inputTitle" => $inputType->title,
-                    "name"       => $specItem->name,
-                    "values"     => $specValuesData,
+                    "name"       => $optionItem->name,
+                    "values"     => $optionValuesData,
                 ];
 
-                array_push($specItemsData, $newSpecItem);
+                array_push($optionItemsData, $newOptionItem);
             }
 
-            $newSpecData = [
-                "specId" => $spec->id,
-                "name"   => $spec->spec_name,
-                "items"  => $specItemsData,
+            $newOptionData = [
+                "id"    => $option->id,
+                "name"  => $option->option_name,
+                "items" => $optionItemsData,
             ];
 
-            array_push($specsData, $newSpecData);
+            array_push($optionsData, $newOptionData);
         }
 
-        return ApiController::api($specsData, null);
+        return ApiController::api($optionsData, null);
     }
 }

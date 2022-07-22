@@ -12,7 +12,7 @@ use function PHPUnit\Framework\isEmpty;
 
 class DesignController extends Controller {
     public function getDesigns(Request $request): JsonResponse {
-        $shop      = Auth::user()->shop->first();
+        $shop = Auth::user()->shop->first();
         $productId = $request->input('productId');
 
         $product = Product::find($productId);
@@ -20,7 +20,7 @@ class DesignController extends Controller {
 
         $data = array();
         foreach ($designs as $design) {
-            $warranty     = $design->warranty;
+            $warranty = $design->warranty;
             $warrantyData = null;
             if ($warranty != null) {
                 $warrantyData = [

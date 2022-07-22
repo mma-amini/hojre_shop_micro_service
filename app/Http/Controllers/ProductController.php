@@ -16,7 +16,7 @@ class ProductController extends Controller {
         $shop = Auth::user()->shop->first();
 
         $categories = $shop->categories;
-        $index      = 0;
+        $index = 0;
         foreach ($categories as $category) {
             $products = $category->products;
             if (sizeof($products) == 0) {
@@ -27,7 +27,7 @@ class ProductController extends Controller {
         $data = array();
         foreach ($categories as $category) {
             $newCat = [
-                "categoryId"   => $category->id,
+                "id"           => $category->id,
                 "categoryName" => $category->category_name,
                 "picture"      => $category->picture,
                 "parentId"     => $category->parent_id
@@ -40,7 +40,7 @@ class ProductController extends Controller {
     }
 
     public function shopProducts(Request $request): JsonResponse {
-        $shop       = Auth::user()->shop->first();
+        $shop = Auth::user()->shop->first();
         $categoryId = $request->input('categoryId');
 
         $products = $shop->products;
@@ -63,10 +63,10 @@ class ProductController extends Controller {
         $data = array();
 
         foreach ($approvedProducts as $product) {
-            $brand              = $product->brand;
-            $approvedDesigns    = $product->designs->where('is_active', 1);
+            $brand = $product->brand;
+            $approvedDesigns = $product->designs->where('is_active', 1);
             $notApprovedDesigns = $product->designs->where('is_active', 0);
-            $productImages      = $product->productImages;
+            $productImages = $product->productImages;
 
             $pictures = array();
             foreach ($productImages as $productImage) {
@@ -79,7 +79,7 @@ class ProductController extends Controller {
             }
 
             $newPro = [
-                "productId"                      => $product->id,
+                "id"                             => $product->id,
                 "productName"                    => $product->product_name,
                 "isOriginal"                     => $product->is_original == 1,
                 "description"                    => $product->description,
@@ -105,23 +105,23 @@ class ProductController extends Controller {
     }
 
     public function insertProduct(Request $request): JsonResponse {
-        $productName           = $request->input('productName');
-        $productGroupID        = $request->input('productGroupID');
-        $brandId               = $request->input('brandId');
-        $brandName             = $request->input('brandName');
-        $productPackWeight     = $request->input('productPackWeight');
-        $productPackLength     = $request->input('productPackLength');
-        $productPackWidth      = $request->input('productPackWidth');
-        $productPackHeight     = $request->input('productPackHeight');
+        $productName = $request->input('productName');
+        $productGroupID = $request->input('productGroupID');
+        $brandId = $request->input('brandId');
+        $brandName = $request->input('brandName');
+        $productPackWeight = $request->input('productPackWeight');
+        $productPackLength = $request->input('productPackLength');
+        $productPackWidth = $request->input('productPackWidth');
+        $productPackHeight = $request->input('productPackHeight');
         $productPackWeightType = $request->input('productPackWeightType');
-        $description           = $request->input('description');
-        $original              = $request->input('original');
-        $sections              = $request->input('sections');
+        $description = $request->input('description');
+        $original = $request->input('original');
+        $options = $request->input('options');
 
         if (Helpers::isNullOrEmptyString($brandId) && !(Helpers::isNullOrEmptyString($brandName))) {
-            $brand             = new Brand();
+            $brand = new Brand();
             $brand->brand_name = $brandName;
-            $brand->is_active  = 1;
+            $brand->is_active = 1;
 
             $brand->save();
             $brandId = $brand->id;
@@ -129,14 +129,14 @@ class ProductController extends Controller {
 
         $product = new Product();
 
-        $product->product_name         = $productName;
-        $product->brand_id             = !(Helpers::isNullOrEmptyString($brandId)) ? $brandId : null;
-        $product->is_original          = $original ? 1 : 0;
+        $product->product_name = $productName;
+        $product->brand_id = !(Helpers::isNullOrEmptyString($brandId)) ? $brandId : null;
+        $product->is_original = $original ? 1 : 0;
         $product->packaging_dimensions = $productPackWidth . "x" . $productPackHeight . "x" . $productPackLength;
-        $product->packing_weight       = $productPackWeight . " " . $productPackWeightType;
-        $product->product_dimensions   = $productPackWidth . "x" . $productPackHeight . "x" . $productPackLength;
-        $product->product_weight       = $productPackWeight . " " . $productPackWeightType;
-        $product->description          = $description;
+        $product->packing_weight = $productPackWeight . " " . $productPackWeightType;
+        $product->product_dimensions = $productPackWidth . "x" . $productPackHeight . "x" . $productPackLength;
+        $product->product_weight = $productPackWeight . " " . $productPackWeightType;
+        $product->description = $description;
 
         $isSaved = $product->save();
 
@@ -147,7 +147,7 @@ class ProductController extends Controller {
 
             $product->shops()->attach($shop->id);
 
-            $data = ["productId" => $productId];
+            $data = ["id" => $productId];
             return ApiController::api($data);
         } else {
             return ApiController::api(null, "اشکال در روند برنامه", 410);
@@ -155,11 +155,11 @@ class ProductController extends Controller {
     }
 
     public function insertProductImage(Request $request): JsonResponse {
-        $id        = $request->input('id');
+        $id = $request->input('id');
         $productId = $request->input('productId');
-        $isMain    = $request->input('isMain');
-        $sort      = $request->input('sort');
-        $image     = $request->file('image');
+        $isMain = $request->input('isMain');
+        $sort = $request->input('sort');
+        $image = $request->file('image');
 
         $destination_path = './productImages';
 
@@ -167,11 +167,11 @@ class ProductController extends Controller {
 
         if ($imageData != null && $imageData->getFilename() != null) {
 
-            $productImage             = new ProductImage();
-            $productImage->id         = $id;
+            $productImage = new ProductImage();
+            $productImage->id = $id;
             $productImage->product_id = $productId;
-            $productImage->picture    = "/productImages/" . $id . ".jpg";
-            $productImage->is_main    = $isMain ? 1 : 0;
+            $productImage->picture = "/productImages/" . $id . ".jpg";
+            $productImage->is_main = $isMain ? 1 : 0;
 
             $isSaved = $productImage->save();
 

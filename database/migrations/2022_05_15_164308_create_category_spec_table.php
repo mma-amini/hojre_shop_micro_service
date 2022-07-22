@@ -11,21 +11,21 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('category_spec', function (Blueprint $table) {
+        Schema::create('category_option', function (Blueprint $table) {
             $table->uuid('category_id');
-            $table->uuid('spec_id');
-            
+            $table->uuid('option_id');
+
             $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('spec_id')->references('id')->on('specs')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('option_id')->references('id')->on('options')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('category_spec');
+        Schema::dropIfExists('category_option');
     }
 };

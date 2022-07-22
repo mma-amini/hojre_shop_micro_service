@@ -4,5 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SpecValueSpecItem extends ModelUuid {
+class CategoryOption extends ModelUuid {
+
 }

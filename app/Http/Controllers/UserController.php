@@ -24,7 +24,7 @@ class UserController extends Controller {
         $user = User::where('username', $username)->first();
 
         if (!empty($user)) {
-            $roles  = $user->roles;
+            $roles = $user->roles;
             $isShop = false;
             foreach ($roles as $role) {
                 if (Str::contains($role->id, "b6b7a78d-70f3-467a-afb8-18c0661cb0c9")) {
@@ -48,11 +48,11 @@ class UserController extends Controller {
     }
 
     public function sendCode(User $user): JsonResponse {
-        $code           = strval(rand(100000, 999999));
+        $code = strval(rand(100000, 999999));
         $user->password = Hash::make($code);
         $user->save();
 
-        $client        = DB::table('oauth_clients')->where('id', '2')->first();
+        $client = DB::table('oauth_clients')->where('id', '2')->first();
         $client_secret = $client->secret;
 
         $data = [
@@ -66,7 +66,7 @@ class UserController extends Controller {
     }
 
     public function insertUser($username): JsonResponse {
-        $user           = new User();
+        $user = new User();
         $user->username = $username;
         $user->save();
 
